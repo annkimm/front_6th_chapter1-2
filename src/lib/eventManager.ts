@@ -13,7 +13,7 @@ export function setupEventListeners(root: HTMLElement) {
     const newListener = (e: Event) => {
       const target = e.target; // 클릭된 요소
       const handlers = eventMap.get(target as EventTarget)?.[eventType]; // 그 요소의 click 핸들러들
-      handlers?.forEach((h: Function) => h(e)); // 실행!
+      handlers?.forEach((h: Function) => h && h(e)); // 실행!
     };
     listenerMap.set(eventType, newListener);
     root.addEventListener(eventType, newListener);

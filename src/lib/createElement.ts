@@ -8,10 +8,6 @@ export function createElement(vNode: VNodeChild) {
 
   const node = vNode as VNode;
 
-  if (typeof node?.type === "function") {
-    throw new Error();
-  }
-
   if (Array.isArray(vNode)) {
     const fragment = document.createDocumentFragment();
     vNode.forEach((item) => {
@@ -31,6 +27,10 @@ export function createElement(vNode: VNodeChild) {
     return tag;
   }
 
+  if (typeof node?.type === "function") {
+    throw Error();
+  }
+
   return createTextNode(`${vNode}`);
 }
 
@@ -45,7 +45,17 @@ function createTag(type: string) {
 function updateAttributes($el: HTMLElement, props: Record<string, any> | null) {
   if (props) {
     for (const [key, value] of Object.entries(props)) {
-      $el.setAttribute(key === "className" ? "class" : key, value);
+      if (key.startsWith("on")) {
+        // addEvent 사용! (이벤트 위임)
+        const eventType = key.slice(2).toLowerCase(); // onClick → click
+        addEvent($el, eventType, value);
+      } else {
+        if (["checked", "selected", "disabled", "readOnly"].includes(key)) {
+          $el[key] = value;
+        } else {
+          $el.setAttribute(key === "className" ? "class" : key, value);
+        }
+      }
     }
   }
 

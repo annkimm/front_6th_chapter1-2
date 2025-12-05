@@ -11,12 +11,14 @@ export function renderElement(vNode: VNodeChild, container: HTMLElement) {
 
   if (!container.firstChild) {
     const elements = createElement(normalizeVNode(vNode));
+    console.log("a");
 
     container["_vNode"] = normalizeVNode(vNode);
     container.append(elements);
   } else {
     container = updateElement(container, vNode, container["_vNode"]);
-    container["_vNode"] = normalizeVNode(vNode);
+    container["_vNode"] = vNode;
+    console.log("b");
   }
 
   return setupEventListeners(container);

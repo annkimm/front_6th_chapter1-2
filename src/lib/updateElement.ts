@@ -78,7 +78,7 @@ export function updateElement(parentElement: HTMLElement, newNode: VNodeChild, o
       parentElement.removeChild(oldElement);
     }
   } else if (rNewNode?.type !== rOldNode?.type) {
-    const node = createElement(normalizeVNode(newNode));
+    const node = createElement(rNewNode);
 
     // 완전 교체!
     parentElement.replaceChild(node, parentElement.childNodes[index]);
@@ -92,7 +92,7 @@ export function updateElement(parentElement: HTMLElement, newNode: VNodeChild, o
     const target = updateAttributes(element as HTMLElement, rNewNode.props, rOldNode.props);
 
     // 자식들 재귀 업데이트!
-    const maxLength = Math.max(rNewNode.children.length, rOldNode.children.length);
+    const maxLength = Math.max((rNewNode.children || []).length, (rOldNode.children || []).length);
     for (let i = 0; i < maxLength; i++) {
       updateElement(target, rNewNode.children[i] ?? null, rOldNode.children[i], i);
     }

@@ -62,7 +62,7 @@ function updateAttributes(
 }
 
 export function updateElement(parentElement: HTMLElement, newNode: VNodeChild, oldNode: VNodeChild, index = 0) {
-  const rNewNode = normalizeVNode(newNode) as VNode;
+  const rNewNode = newNode as VNode;
   const rOldNode = oldNode as VNode;
 
   if (!oldNode && newNode) {

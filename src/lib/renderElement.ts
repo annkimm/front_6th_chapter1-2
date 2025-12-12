@@ -9,16 +9,16 @@ export function renderElement(vNode: VNodeChild, container: HTMLElement) {
   // 이후에는 updateElement로 기존 DOM을 업데이트한다.
   // 렌더링이 완료되면 container에 이벤트를 등록한다.
 
-  if (!container.firstChild) {
-    const node = normalizeVNode(vNode);
-    const elements = createElement(node);
+  const node = normalizeVNode(vNode);
 
-    container["_vNode"] = node;
+  if (!container.firstChild) {
+    const elements = createElement(node);
     container.append(elements);
   } else {
-    container = updateElement(container, vNode, container["_vNode"]);
-    container["_vNode"] = vNode;
+    updateElement(container, node, container["_vNode"]);
   }
+
+  container["_vNode"] = node;
 
   return setupEventListeners(container);
 }
